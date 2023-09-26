@@ -27,3 +27,8 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
+        REPORT = $(<badges/coverage-sumary.json)
+        COVERAGE = $(jq -r '.coverage' <<< "&REPORT")%
+        BRANCHES = $(jq -r '.branches' <<< "$REPORT")%
+
+      continue-on-error: true 
