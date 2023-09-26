@@ -27,12 +27,41 @@ jobs:
           cache: maven
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
-        REPORT = $(<badges/coverage-sumary.json)
-        COVERAGE = $(jq -r '.coverage' <<< "&REPORT")%
-        BRANCHES = $(jq -r '.branches' <<< "$REPORT")%
+        - name: Generar jacoco Badge
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          badges-directory: badges
+          generate-branches-badge: true
+          generate-summary: true
+          
+      - name: Log coverage percent
+        run: |
+          echo "coverage = ${{setps.jacoco.outputs.coverage}}"
+          echo "branches = ${{setps.jacoco.outputs.branches}}"
 
-      continue-on-error: true 
+      - name: Upload jacoco coverage as workflow artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+
+
+      - name: reportes covertura
+        if: ${{github.event_name == 'pull_request'}}
+        run: |
+          REPORT = $(<badges/coverage-sumary.json)
+          COVERAGE = $(jq -r '.coverage' <<< "&REPORT")%
+          BRANCHES = $(jq -r '.branches' <<< "$REPORT")%
+          NEWLINE=$'\n'
+          BODY ="## jacoco test coverage summary statistics$(NEWLINE)* __Coverage:__ ${COVRAGE}${NEWLINE}* __Branches:__${BRANCHES}"
+          gh pr comment ${{github.event.pull_request.number}}-b "${BODY}" 
+        continue-on-error: true 
+        env: 
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Get the Coverage info
         run: |
           echo "Total Coverage ${{setps.maven-despliegue-fallos.outputs.coverage}}"
+          echo "Changed files Coverage ${{setps.maven-despliegue-fallos.outputs.coverage-changed-files}}"
+
