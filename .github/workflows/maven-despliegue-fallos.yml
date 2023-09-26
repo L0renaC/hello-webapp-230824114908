@@ -25,9 +25,11 @@ jobs:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
           cache: maven
+
+
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
-        - name: Generar jacoco Badge
+      - name: Generar jacoco Badge
         id: jacoco
         uses: cicirello/jacoco-badge-generator@v2
         with:
