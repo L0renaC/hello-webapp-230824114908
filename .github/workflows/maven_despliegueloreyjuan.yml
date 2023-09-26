@@ -29,6 +29,17 @@ jobs:
         with:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
+      - name: reportes covvertura
+        run: |
+          REPORT = $(<badges/coverage-sumary.json)
+          COVERAGE = $(jq -r '.coverage' <<< "&REPORT")%
+          BRANCHES = $(jq -r '.branches' <<< "$REPORT")%
+
+      continue-on-error: true 
+
+      - name: Get the Coverage info
+        run: |
+          echo "Total Coverage ${{setps.maven-despliegue-fallos.outputs.coverage}}"
 
   deploy:
     runs-on: ubuntu-latest
