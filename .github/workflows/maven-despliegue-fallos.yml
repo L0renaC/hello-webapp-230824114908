@@ -50,6 +50,14 @@ jobs:
           name: jacoco-report
           path: target/site/jacoco/
 
+      - name: Coverage CheckOut
+        run: |
+          COVERAGE=$(echo "${{ steps.jacoco.outputs.coverage }}" | tr -d '%')
+          if [ "$COVERAGE" -lt 60 ]; then
+            echo "Code coverage is below 50%, setting workflow status to failure."
+            exit 1
+          fi 
+
       
 
 
@@ -71,13 +79,7 @@ jobs:
           echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
           echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
 
-      - name: Coverage CheckOut
-        run: |
-          COVERAGE=$(echo "${{ steps.jacoco.outputs.coverage }}" | tr -d '%')
-          if [ "$COVERAGE" -lt 60 ]; then
-            echo "Code coverage is below 50%, setting workflow status to failure."
-            exit 1
-          fi 
+      
 
       
 
