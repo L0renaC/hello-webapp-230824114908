@@ -57,6 +57,11 @@ jobs:
             echo "Code coverage is below 50%, setting workflow status to failure."
             exit 1
           fi 
+      - name: Fail if coverage is below 60%
+        if: ${{ steps.jacoco.outputs.coverage < 60.0 }}
+        run: |
+         echo "Code coverage is below 60%."
+          exit 1
 
       - name: Comment on PR with coverage percentages
         if: ${{ github.event_name == 'pull_request' }}
@@ -67,7 +72,7 @@ jobs:
           NEWLINE=$'\n'
           BODY="## JaCoCo Test Coverage Summary Statistics${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branches:__ ${BRANCHES}"
           gh pr comment ${{github.event.pull_request.number}} -b "${BODY}"
-        #continue-on-error: true
+        continue-on-error: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -76,10 +81,4 @@ jobs:
           echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
           echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
 
-      - name: Coverage CheckOut
-        run: |
-          COVERAGE=$(echo "${{ steps.jacoco.outputs.coverage }}" | tr -d '%')
-          if [ "$COVERAGE" -lt 60 ]; then
-            echo "Code coverage is below 60%, setting workflow status to failure."
-            exit 1
-          fi    
+       
