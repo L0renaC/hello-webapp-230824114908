@@ -50,6 +50,15 @@ jobs:
           name: jacoco-report
           path: target/site/jacoco/
 
+      - name: Check coverage
+        run: |
+          REPORT=$(<badges/coverage-summary.json)
+          COVERAGE=$(jq -r '.coverage' <<< "$REPORT")%
+          if [ "$COVERAGE" -lt 60 ]; then
+            echo "La cobertura es menor que 60%"
+            exit 1
+          fi
+
 
       - name: Comment on PR with coverage percentages
         if: ${{ github.event_name == 'pull_request' }}
@@ -69,14 +78,7 @@ jobs:
           echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
           echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
 
-      - name: Check coverage
-        run: |
-          REPORT=$(<badges/coverage-summary.json)
-          COVERAGE=$(jq -r '.coverage' <<< "$REPORT")%
-          if [ "$COVERAGE" -lt 60 ]; then
-          echo "La cobertura es menor que 60%"
-          exit 1
-          fi
+      
 
      
         
