@@ -66,8 +66,17 @@ jobs:
 
       - name: Get the Coverage info
         run: |
-          echo "Total coverage aeee ${{ steps.jacoco.outputs.coverage-overall }}"
+          echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
           echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
+
+      - name: Check coverage
+        run: |
+          REPORT=$(<badges/coverage-summary.json)
+          COVERAGE=$(jq -r '.coverage' <<< "$REPORT")%
+          if [ "$COVERAGE" -lt 60 ]; then
+          echo "La cobertura es menor que 60%"
+          exit 1
+          fi
 
      
         
