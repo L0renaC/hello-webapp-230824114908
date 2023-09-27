@@ -71,15 +71,13 @@ jobs:
           echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
           echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
 
-      - name: Verificar cobertura mínima
+      - name: Coverage CheckOut
         run: |
-          COVERAGE=$(echo "${{ steps.jacoco.outputs.coverage }}" | cut -d'%' -f1)
-          if [[ $COVERAGE -lt 60 ]]; then
-            echo "La cobertura es menor al 60% (${COVERAGE}%). Faliendo la prueba."
+          COVERAGE=$(echo "${{ steps.jacoco.outputs.coverage }}" | tr -d '%')
+          if [ "$COVERAGE" -lt 60 ]; then
+            echo "Code coverage is below 50%, setting workflow status to failure."
             exit 1
-          else
-           echo "La cobertura es aceptable (${COVERAGE}%)."
-          fi
+          fi 
 
       
 
