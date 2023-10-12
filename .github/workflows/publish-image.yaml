@@ -8,7 +8,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Build and push the Image
-              run:
+              run: |
                 docker login -- username obdrase --password ${{ secrets.GH_PAT }} ghcr.io
                 docker build . --tag ghcr.io/obdrase/petclinic-app:latest
                 docker push ghcr.io/obdrase/petclinic-app:latest
