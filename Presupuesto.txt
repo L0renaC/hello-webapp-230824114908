@@ -1,3 +1,5 @@
+Hecho por Lorena Cadavid y Juan David Londoño
+
 1. Que recursos web de azure utilizarían para llevar a producción esa aplicación 
 Enumere todos los recursos que consideran necesarios la idea es atender personas que se encuentran 
 en Alemania. 10.000 Usuarios concurrentes. La aplicación debe estar disponible 24 horas de lunes a domingo (todos los días del año) 
