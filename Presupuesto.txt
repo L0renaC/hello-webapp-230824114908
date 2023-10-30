@@ -1,0 +1,40 @@
+1. Que recursos web de azure utilizarían para llevar a producción esa aplicación 
+Enumere todos los recursos que consideran necesarios la idea es atender personas que se encuentran 
+en Alemania. 10.000 Usuarios concurrentes. La aplicación debe estar disponible 24 horas de lunes a domingo (todos los días del año) 
+
+R=1) Para el despliegue de petclinic, se utilizará principalmente un un web App Service,
+con una máquina virtual basada en Linux ya que es más barata y con java 17, necesario para su despliegue,
+Para esto, se estuvo pensando en que la aplicación no necesitaría más de 1,75 gb, 
+pero con 10000 usuarios simultáneos, lo minimo seria usar al menos, 16gb de ram, 
+debido a la gran carga de recursos que se tendría en todo momento, pero, al petclinic no ser una aplicación muy pesada, 
+podremos utilizar 16 gb de ram, entre las opciones que hay disponibles de 16 gb de ram, la isolated V2 I2v2 sería 
+la mejor opción por su capacidad de procesamiento, pero es un precio muy alto (597 dólares al mes), en cambio, 
+la Premium v3 P2V3 sería la mejor opción en este caso, ya que esta además de los 16 gb de ram necesario, 
+su precio es un 57% más barato que la isolated el cual nos quedaría en 259,88 Dólares al mes.
+
+2) Ademas de esto, Petclinic necesitaría 2 recursos mas, una base de datos y un servicio de backup, 
+los cuales podemos encontrar dentro de azure, buscando en azure, se pudo encontrar un creador de bases de datos de postgresql, 
+el cual nos podria ser de mucha utilidad para el despliegue además de que al usar este tipo de base de datos, 
+tenemos acceso al azure backup directamente, el cual no nos generara un costo extra para este despliegue, 
+revisando en las posibles opciones, la principal caracteristica que se miro fue la capacidad de entradas y 
+salidas de la maquina, una de las que destaco fue la DS2_v2, la cual posee una capacidad de 6400 Entradas y salidas, 
+la cual se vio perfecto en el escenario donde los 10000 usuarios simultaneos no solicitan o envian recursos a la base de datos, 
+en este caso el precio no seria muy elevado y que serian 118,99 dolares mensual, 
+Suponiendo el caso que necesitaramos mas opciones de entradas y salidas, podriamos utilizar la DS3_v2, 
+ya que cuenta con 12800 capacidad de entradas y salidas por segundo, pero esto nos aumentaria el precio al doble (218 dolares mensuales), 
+entonces no se entra encuenta por el escenario planteado anteriormente. 
+
+
+
+2. Cuanto seria el presupuesto mensual de los recursos a necesitar? 
+
+
+Cotizando el uso de estos 2 recursos de azure, se estimó un costo de 378.87 dólares mensuales en el despliegue de Petclinic, 
+en el mejor de los casos, teniendo en cuenta el uso simultáneo de 10000 usuarios en alemania, 
+el cual anualmente nos generaría un costo de 4546.44 dólares anuales. 
+
+Cabe aclarar que este presupuesto es para finales del año 2023, si el despliegue del proyecto 
+se llegara a demorar mucho, podría ocasionar una elevación de precio si es que azure los adapta a 
+la inflación, o si se llegarán a adaptar los precios de las máquinas por disponibilidad, 
+o por una situación tercera qué ocasione este caso, para ellos, se podría calcular los precios de nuevo 
+con las identificaciones de los productos y si es que la base de datos de postgres aún incluye el backup. 
