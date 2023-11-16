@@ -27,7 +27,7 @@ jobs:
           if az webapp deployment slot show --name despliegueloreyjuan --resource-group GestionConfiguracion --slot slot; then
             echo "El slot existe."
           else
-            echo "El slot no existe."
+            echo "El slot no existe"
             exit 1
           fi
         continue-on-error: True
@@ -37,5 +37,5 @@ jobs:
       - name: Send notification on error
         if: ${{ failure() }}
         run: |
-          echo "Se produjo un error en la canalización."
+          echo "Se produjo un error en la canalización"
           # Agrega aquí el código para enviar una alerta por correo electrónico o mensaje de texto.
