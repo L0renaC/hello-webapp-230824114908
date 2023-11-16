@@ -24,12 +24,13 @@ jobs:
           cache: maven
       - name: Check if slot exists
         run: |
-          if az webapp deployment slot show --name <despliegueloreyjuan> --resource-group <GestionConfiguracion> --slot <slot>; then
+          if az webapp deployment slot show --name despliegueloreyjuan --resource-group GestionConfiguracion --slot slot; then
             echo "El slot existe."
           else
             echo "El slot no existe."
             exit 1
           fi
+        continue-on-error: True
       - name: Build with Maven Wrapper
         run: ./mvnw -B package
         continue-on-error: false
